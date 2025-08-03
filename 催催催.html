@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <title>鞭子抽人小游戏</title>
+    <style>
+        html,body{margin:0;height:100%;background:#222;display:flex;justify-content:center;align-items:center;font-family:sans-serif;overflow:hidden}
+        #stage{position:relative;width:300px;height:200px}
+        /* 左边挥鞭人 */
+        .person{width:60px;height:100px;position:absolute;bottom:0}
+        #a{left:20px;background:#4a90e2;border-radius:30px 30px 0 0}
+        .arm{position:absolute;width:8px;height:60px;background:#4a90e2;top:30px;left:55px;transform-origin:top;transform:rotate(-30deg);border-radius:4px}
+        .whip{position:absolute;width:4px;height:120px;background:#8B4513;top:60px;left:0;transform-origin:top;transform:rotate(20deg);border-radius:2px}
+        /* 右边被抽人 */
+        #b{right:20px;background:#e25c5c;border-radius:30px 30px 0 0}
+        /* 文字 */
+        #info{position:absolute;top:10px;left:50%;transform:translateX(-50%);color:#fff;font-size:14px}
+    </style>
+</head>
+<body>
+    <div id="info">鞭子抽人动画</div>
+    <div id="stage">
+        <!-- 挥鞭人 -->
+        <div id="a" class="person">
+            <div class="arm">
+                <div class="whip"></div>
+            </div>
+        </div>
+        <!-- 被抽人 -->
+        <div id="b" class="person"></div>
+    </div>
+
+    <script>
+        const arm = document.querySelector('.arm');
+        const whip = document.querySelector('.whip');
+        const victim = document.getElementById('b');
+        let angle = -30, direction = 1;
+
+        function animate() {
+            // 手臂摆动
+            angle += direction * 3;
+            if (angle > 60) direction = -1;
+            if (angle < -60) direction = 1;
+            arm.style.transform = `rotate(${angle}deg)`;
+
+            // 鞭子跟随手臂
+            whip.style.transform = `rotate(${angle + 50}deg)`;
+
+            // 被抽人抖动
+            if (angle > 50) {
+                victim.style.transform = `translateX(${Math.random()*6-3}px)`;
+            } else {
+                victim.style.transform = 'translateX(0)';
+            }
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
